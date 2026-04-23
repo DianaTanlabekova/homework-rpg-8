@@ -1,5 +1,6 @@
 package com.narxoz.rpg.combatant;
 
+import com.narxoz.rpg.state.BerserkState;
 import com.narxoz.rpg.state.HeroState;
 import com.narxoz.rpg.state.NeutralState;
 
@@ -38,6 +39,10 @@ public class Hero {
         int actual = state.modifyIncomingDamage(amount);
         hp = Math.max(0, hp - actual);
         System.out.println("  " + name + " takes " + actual + " damage. HP: " + hp + "/" + maxHp);
+        if (isAlive() && hp <= maxHp * 0.3 && !(state instanceof BerserkState)) {
+            System.out.println("  " + name + " is critically wounded!");
+            setState(new BerserkState());
+        }
     }
 
     public void heal(int amount) {
@@ -61,4 +66,5 @@ public class Hero {
         return state.canAct();
     }
 }
+
 
